@@ -1,6 +1,5 @@
 import boto3
-import logging
-from utils.utils import return_response, get_secret_hash, get_environ
+from utils.utils import return_response, get_secret_hash, get_environ, logger_info, logger_error
 
 
 def confirm_sign_up(body):
@@ -14,26 +13,26 @@ def confirm_sign_up(body):
             ConfirmationCode=body['code'],
         )
 
-        logging.info(response)
+        logger_info(response)
 
         return return_response(201, 'Usuário validado com sucesso.', response)
 
     except client.exceptions.UserNotFoundException as e:
-        logging.error(str(e))
+        logger_error(str(e))
         return return_response(404, 'Usuário inexistente.')
 
     except client.exceptions.ExpiredCodeException as e:
-        logging.error(str(e))
+        logger_error(str(e))
         return return_response(422, 'Código de validação expirado.')
 
     except client.exceptions.NotAuthorizedException as e:
-        logging.error(str(e))
+        logger_error(str(e))
         return return_response(422, 'Usuário já estava validado.')
 
     except client.exceptions.CodeMismatchException as e:
-        logging.error(str(e))
+        logger_error(str(e))
         return return_response(422, 'Código de validação inválido.')
 
     except Exception as e:
-        logging.error(str(e))
+        logger_error(str(e))
         return return_response(500, "Ocorreu um erro, por favor, tente novamente.")

@@ -3,7 +3,9 @@ import hmac
 import hashlib
 import base64
 import json
+import logging
 
+logging.getLogger().setLevel(logging.INFO)
 
 def get_secret_hash(username):
     msg = username + get_environ('client_id')
@@ -29,3 +31,11 @@ def get_environ(name_env):
 
 def get_body(request):
     return json.loads(request)
+
+
+def logger_info(message):
+    logging.info(message)
+
+
+def logger_error(message):
+    logging.error(message)

@@ -2,7 +2,7 @@ import logging
 from hmv.signup import signup
 from hmv.confirm_signup import confirm_sign_up
 from hmv.resend_code import resend_confirmation_code
-from utils.utils import get_body, return_response
+from utils.utils import get_body, logger_info, logger_error
 
 
 def lambda_handler(event, context):
@@ -20,9 +20,9 @@ def lambda_handler(event, context):
 def get_route(event):
     resource: str = event.get('resource', None)
     if not resource:
-        logging.error('The resource key was not found in event.')
+        logger_error('The resource key was not found in event.')
         raise BaseException()
 
-    logging.info('Resource: {}'.format(resource))
+    logger_info('Resource: {}'.format(resource))
 
     return resource
